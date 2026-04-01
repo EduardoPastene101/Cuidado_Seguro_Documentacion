@@ -1,0 +1,62 @@
+direction: right
+
+# === Usuario ===
+User: {
+  label: "Usuario"
+}
+
+# === Frontend ===
+Frontend: {
+  label: "Frontend (React JS - AWS S3)"
+  UserInterface
+}
+
+# === API Gateway ===
+APIGateway: {
+  label: "API Gateway / BFF"
+
+  AuthRoute: "/api/auth"
+  PacientesRoute: "/api/pacientes"
+  MedicalRoute: "/api/medicalData"
+}
+
+# === Microservicios ===
+AuthService: {
+  label: "Microservicio Auth & Usuarios"
+
+}
+
+PacientesService: {
+  label: "Microservicio Pacientes"
+}
+
+MedicalService: {
+  label: "Microservicio Datos Médicos"
+}
+
+# === Base de Datos ===
+Database: {
+  label: "MySQL 8 (AWS EC2)"
+}
+Database2: {
+  label: "MySQL 8 (On premise)"
+}
+Database3: {
+  label: "MySQL 8 (AWS EC2)"
+}
+
+# === Relaciones ===
+
+# Flujo principal (Frontend antes de API Gateway)
+User -> Frontend: "Interacción UI"
+Frontend -> APIGateway: "HTTPS Requests"
+
+# Gateway enruta a microservicios
+APIGateway -> AuthService: "/api/auth"
+APIGateway -> PacientesService: "/api/pacientes"
+APIGateway -> MedicalService: "/api/medicalData"
+
+# Microservicios acceden a BD
+AuthService -> Database
+PacientesService -> Database2
+MedicalService -> Database3

@@ -1,0 +1,165 @@
+Table roles {
+  id_rol int [pk, increment]
+  nombre varchar(50) [not null, unique]
+}
+
+Table usuarios {
+  id_usuario int [pk, increment]
+  email varchar(100) [not null, unique]
+  password_hash varchar(255) [not null]
+  activo boolean [default: true]
+  fecha_creacion timestamp [default: `now()`]
+}
+
+Table usuario_rol {
+  id_usuario int
+  id_rol int
+
+  indexes {
+    (id_usuario, id_rol) [pk]
+  }
+}
+
+Table personas {
+  id_persona int [pk, increment]
+  rut varchar(20) [unique]
+  nombre varchar(100)
+  apellido varchar(100)
+  fecha_nacimiento date
+  telefono varchar(20)
+}
+
+Ref: usuarios.id_usuario - personas.id_persona
+
+Table medicos {
+  id_medico int [pk, increment]
+  id_persona int [not null]
+}
+
+Table especialidades {
+  id_especialidad int [pk, increment]
+  nombre varchar(100) [unique]
+}
+
+Table medico_especialidad {
+  id_medico int
+  id_especialidad int
+
+  indexes {
+    (id_medico, id_especialidad) [pk]
+  }
+}
+
+Table pacientes {
+  id_paciente int [pk, increment]
+  id_persona int [not null]
+  numero_ficha varchar(50) [unique]
+}
+
+Table instituciones {
+  id_institucion int [pk, increment]
+  nombre varchar(150)
+  direccion varchar(200)
+}
+
+Table paciente_institucion {
+  id_paciente int
+  id_institucion int
+  fecha_ingreso date
+
+  indexes {
+    (id_paciente, id_institucion, fecha_ingreso) [pk]
+  }
+}
+
+Table diagnosticos {
+  id_diagnostico int [pk, increment]
+  nombre varchar(150) [not null, unique]
+}
+
+Table registros_clinicos {
+  id_registro int [pk, increment]
+  id_paciente int [not null]
+  id_medico int [not null]
+  id_diagnostico int [not null]
+  fecha timestamp [default: `now()`]
+  observaciones text
+}
+
+Table tratamientos {
+  id_tratamiento int [pk, increment]
+  nombre varchar(100)
+  descripcion text
+}
+
+Table registro_tratamiento {
+  id_registro int
+  id_tratamiento int
+  dosis varchar(50)
+  frecuencia varchar(50)
+
+  indexes {
+    (id_registro, id_tratamiento) [pk]
+  }
+}
+
+Table terminos_condiciones {
+  id_terminos int [pk, increment]
+  version varchar(20) [not null]
+  contenido text [not null]
+  fecha_publicacion date [not null]
+  obligatorio boolean [default: true]
+}
+
+Table consentimientos {
+  id_consentimiento int [pk, increment]
+  id_usuario int [not null]
+  id_terminos int [not null]
+
+  fecha_otorgamiento timestamp [not null, default: `now()`]
+  fecha_expiracion timestamp
+  duracion_dias int
+
+  estado varchar(20) [not null] // activo, revocado, expirado
+  medio varchar(50) // web, app, presencial
+
+  ip varchar(50)
+  user_agent varchar(255)
+
+  
+}
+
+Table consentimiento_historial {
+  id_historial int [pk, increment]
+  id_consentimiento int [not null]
+
+  fecha_cambio timestamp [default: `now()`]
+  estado_anterior varchar(20)
+  estado_nuevo varchar(20)
+
+  motivo text
+}
+
+Ref: usuario_rol.id_usuario > usuarios.id_usuario
+Ref: usuario_rol.id_rol > roles.id_rol
+
+Ref: medicos.id_persona > personas.id_persona
+Ref: pacientes.id_persona > personas.id_persona
+
+Ref: medico_especialidad.id_medico > medicos.id_medico
+Ref: medico_especialidad.id_especialidad > especialidades.id_especialidad
+
+Ref: paciente_institucion.id_paciente > pacientes.id_paciente
+Ref: paciente_institucion.id_institucion > instituciones.id_institucion
+
+Ref: registros_clinicos.id_paciente > pacientes.id_paciente
+Ref: registros_clinicos.id_medico > medicos.id_medico
+Ref: registros_clinicos.id_diagnostico > diagnosticos.id_diagnostico
+
+Ref: registro_tratamiento.id_registro > registros_clinicos.id_registro
+Ref: registro_tratamiento.id_tratamiento > tratamientos.id_tratamiento
+
+Ref: consentimientos.id_usuario > usuarios.id_usuario
+Ref: consentimientos.id_terminos > terminos_condiciones.id_terminos
+
+Ref: consentimiento_historial.id_consentimiento > consentimientos.id_consentimiento
