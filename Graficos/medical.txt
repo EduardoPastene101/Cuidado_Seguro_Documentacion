@@ -1,0 +1,39 @@
+direction: right
+
+MedicalController: {
+  +crearRegistro(data)
+  +obtenerPorPaciente(pacienteId)
+  +actualizarRegistro(id, data)
+  +eliminarRegistro(id)
+}
+
+MedicalService: {
+  +crear(data)
+  +obtenerPorPaciente(pacienteId)
+  +actualizar(id, data)
+  +eliminar(id)
+}
+
+MedicalRepository: {
+  label: "<<interface>> MedicalRepository"
+  +findByPacienteId(id)
+  +findById(id)
+  +save(data)
+  +deleteById(id)
+}
+
+JpaMedicalRepository: {
+  +findByPacienteId(id)
+  +findById(id)
+  +save(data)
+  +deleteById(id)
+}
+
+Database: {
+  label: "MySQL"
+}
+
+MedicalController -> MedicalService
+MedicalService -> MedicalRepository
+MedicalRepository -> JpaMedicalRepository: "implements"
+JpaMedicalRepository -> Database

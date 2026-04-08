@@ -1,0 +1,53 @@
+classDiagram
+
+class Frontend {
+  +request()
+}
+
+class BFF {
+  +handleRequest()
+}
+
+class APIGateway {
+  +routeRequest()
+}
+
+class PacienteCB {
+  -state
+  +callService()
+}
+
+class PacienteController {
+  +crearPaciente()
+  +obtenerPaciente()
+}
+
+class PacienteService {
+  +crear()
+  +obtener()
+}
+
+class PacienteRepository {
+  +findById()
+  +save()
+}
+
+class PacienteDB {
+  +MySQL
+}
+
+class PacienteFallback {
+  +errorResponse()
+}
+
+Frontend --> BFF : solicitud
+BFF --> APIGateway : transforma
+
+APIGateway --> PacienteCB : enruta
+
+PacienteCB --> PacienteController : permite
+PacienteCB --> PacienteFallback : fallback
+
+PacienteController --> PacienteService
+PacienteService --> PacienteRepository
+PacienteRepository --> PacienteDB

@@ -1,0 +1,53 @@
+classDiagram
+
+class Frontend {
+  +request()
+}
+
+class BFF {
+  +handleRequest()
+}
+
+class APIGateway {
+  +routeRequest()
+}
+
+class AuthCB {
+  -state
+  +callService()
+}
+
+class AuthController {
+  +login()
+  +registrar()
+}
+
+class AuthService {
+  +validarCredenciales()
+  +generarToken()
+}
+
+class UserRepository {
+  +findByEmail()
+  +save()
+}
+
+class AuthDB {
+  +MySQL
+}
+
+class AuthFallback {
+  +errorResponse()
+}
+
+Frontend --> BFF : solicitud
+BFF --> APIGateway : transforma
+
+APIGateway --> AuthCB : enruta
+
+AuthCB --> AuthController : permite
+AuthCB --> AuthFallback : fallback
+
+AuthController --> AuthService
+AuthService --> UserRepository
+UserRepository --> AuthDB

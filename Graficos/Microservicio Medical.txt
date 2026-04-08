@@ -1,0 +1,53 @@
+classDiagram
+
+class Frontend {
+  +request()
+}
+
+class BFF {
+  +handleRequest()
+}
+
+class APIGateway {
+  +routeRequest()
+}
+
+class MedicalCB {
+  -state
+  +callService()
+}
+
+class MedicalController {
+  +crearRegistro()
+  +obtenerRegistro()
+}
+
+class MedicalService {
+  +procesarRegistro()
+  +generarDiagnostico()
+}
+
+class MedicalRepository {
+  +findById()
+  +save()
+}
+
+class MedicalDB {
+  +MySQL
+}
+
+class MedicalFallback {
+  +errorResponse()
+}
+
+Frontend --> BFF : solicitud
+BFF --> APIGateway : transforma
+
+APIGateway --> MedicalCB : enruta
+
+MedicalCB --> MedicalController : permite
+MedicalCB --> MedicalFallback : fallback
+
+MedicalController --> MedicalService
+MedicalService --> MedicalRepository
+MedicalRepository --> MedicalDB
