@@ -1,0 +1,9 @@
+El modelo se encuentra en Cuarta Forma Normal porque 
+se eliminaron dependencias multivaluadas, separando 
+relaciones independientes como médico–especialidad y usuario–rol.
+
+Se evitó sobre-normalizar, manteniendo juntas aquellas entidades 
+que dependen directamente de la clave, como tratamientos con dosis 
+y consentimientos con su contexto.
+
+Esto permite consistencia de datos sin afectar el rendimiento.

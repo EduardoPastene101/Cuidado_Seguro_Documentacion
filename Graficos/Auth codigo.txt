@@ -1,0 +1,37 @@
+direction: right
+
+AuthController: {
+  +login(data)
+  +registrar(tipo, data)
+}
+
+AuthService: {
+  +login(email, password)
+  +registrar(tipo, data)
+}
+
+UserFactory: {
+  +createUser(tipo)
+}
+
+UserRepository: {
+  label: "<<interface>> UserRepository"
+  +findByEmail(email)
+  +save(data)
+}
+
+JpaUserRepository: {
+  +findByEmail(email)
+  +save(data)
+}
+
+Database: {
+  label: "MySQL"
+}
+
+AuthController -> AuthService
+AuthService -> UserFactory
+AuthService -> UserRepository
+
+UserRepository -> JpaUserRepository: "implements"
+JpaUserRepository -> Database

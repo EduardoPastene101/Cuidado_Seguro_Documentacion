@@ -1,0 +1,45 @@
+direction: right
+
+PacienteController: {
+  +crearPaciente(data)
+  +obtenerPaciente(id)
+  +obtenerPacientePorRut(rut)
+  +listarPacientes()
+  +actualizarPaciente(id, data)
+  +eliminarPaciente(id)
+}
+
+PacienteService: {
+  +crear(data)
+  +obtenerPorId(id)
+  +obtenerPorRut(rut)
+  +listar()
+  +actualizar(id, data)
+  +eliminar(id)
+}
+
+PacienteRepository: {
+  label: "<<interface>> PacienteRepository"
+  +findById(id)
+  +findByRut(rut)
+  +findAll()
+  +save(data)
+  +deleteById(id)
+}
+
+JpaPacienteRepository: {
+  +findById(id)
+  +findByRut(rut)
+  +findAll()
+  +save(data)
+  +deleteById(id)
+}
+
+Database: {
+  label: "MySQL"
+}
+
+PacienteController -> PacienteService
+PacienteService -> PacienteRepository
+PacienteRepository -> JpaPacienteRepository: "implements"
+JpaPacienteRepository -> Database

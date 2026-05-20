@@ -1,0 +1,1 @@
+El sistema se divide en microservicios independientes, donde cada uno implementa el patrón Factory Method para desacoplar la creación de objetos, junto con Repository para la persistencia. Esto permite escalabilidad, mantenibilidad y bajo acoplamiento entre componentes
